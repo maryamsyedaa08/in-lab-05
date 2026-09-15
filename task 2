@@ -1,0 +1,101 @@
+#include <stdio.h>
+#include <string.h> 
+
+int main() {
+    int category, flight;
+    int age;
+    char doc[10];
+    float actual_weight, allowed_weight = 0.0;
+    
+    printf("  AIRPORT BOARDING VERIFICATION SYSTEM    \n");
+    printf("Select Passenger Category:\n");
+    printf("  1. Adult\n");
+    printf("  2. Student\n");
+    printf("  3. Senior Citizen\n");
+    printf("Enter choice (1-3): ");
+    scanf("%d", &category);
+
+    printf("\nSelect Flight Type:\n");
+    printf("  1. Domestic\n");
+    printf("  2. International\n");
+    printf("Enter choice (1-2): ");
+    scanf("%d", &flight);
+
+    printf("\nEnter passenger age: ");
+    scanf("%d", &age);
+
+    printf("Enter actual baggage weight (in kg): ");
+    scanf("%f", &actual_weight);
+
+    printf("Are travel documents valid? (valid/invalid): ");
+    scanf("%s", doc);
+
+    switch (category) {
+        case 1: 
+            switch (flight) {
+                case 1: allowed_weight = 20.0; break;
+                case 2: allowed_weight = 30.0; break;
+                default: printf("\nError: Invalid flight selected.\n"); return 1;
+            }
+            break;
+
+        case 2: 
+            switch (flight) {
+                case 1: allowed_weight = 25.0; break;
+                case 2: allowed_weight = 35.0; break;
+                default: printf("\nError: Invalid flight selected.\n"); return 1;
+            }
+            break;
+
+        case 3: 
+            switch (flight) {
+                case 1: allowed_weight = 30.0; break;
+                case 2: allowed_weight = 40.0; break;
+                default: printf("\nError: Invalid flight selected.\n"); return 1;
+            }
+            break;
+
+        default:
+            printf("\nError: Invalid passenger category selected.\n");
+            return 1;
+    }
+
+    char verif;
+    switch (age % 5) {
+        case 0: verif = 'A'; break;
+        case 1: verif = 'B'; break;
+        case 2: verif = 'C'; break;
+        case 3: verif = 'D'; break;
+        case 4: verif = 'E'; break;
+        default: verif = 'U'; break; 
+    }
+
+    int prior = (category == 3) || (category == 2 && flight == 2);
+
+    int is_doc_valid = (strcmp(doc, "valid") == 0);
+
+    printf("           VERIFICATION SUMMARY            \n");
+    
+    printf("Passenger Category  : %s\n", 
+           (category == 1) ? "Adult" : (category == 2) ? "Student" : "Senior Citizen");
+    
+    printf("Destination Type    : %s\n", 
+           (flight == 1) ? "Domestic" : "International");
+    
+    printf("Baggage Allowance   : %.1f kg\n", allowed_weight);
+    printf("Actual Baggage      : %.1f kg\n", actual_weight);
+    printf("Document Status     : %s\n", doc);
+    printf("Verification Code   : Category %c\n", verif);
+    printf("Priority Assistance : %s\n", prior ? "Eligible" : "Not Eligible");
+    
+    printf("Boarding Decision   : ");
+    if (!is_doc_valid) {
+        printf("DENIED BOARDING (Invalid Travel Documents)\n");
+    } else if (actual_weight <= allowed_weight) {
+        printf("APPROVED (Normal Boarding)\n");
+    } else {
+        printf("REFERRED (Enhanced Baggage Screening Required)\n");
+    }
+
+    return 0;
+}
