@@ -5,10 +5,9 @@ int main() {
     int age, heart_rate, consciousness;
     float temperature;
     
-    // Inputs
-    printf("===========================================\n");
-    printf("  HOSPITAL EMERGENCY TRIAGE SYSTEM        \n");
-    printf("===========================================\n");
+   
+    printf("  HOSPITAL EMERGENCY TRIAGE SYSTEM \n");
+    
     printf("Select Department:\n");
     printf("  1. General Emergency\n");
     printf("  2. Cardiology\n");
