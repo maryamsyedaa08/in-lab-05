@@ -1,0 +1,143 @@
+#include <stdio.h>
+
+int main() {
+    int department_choice, severity_level;
+    int age, heart_rate, consciousness;
+    float temperature;
+    
+    // Inputs
+    printf("===========================================\n");
+    printf("  HOSPITAL EMERGENCY TRIAGE SYSTEM        \n");
+    printf("===========================================\n");
+    printf("Select Department:\n");
+    printf("  1. General Emergency\n");
+    printf("  2. Cardiology\n");
+    printf("  3. Neurology\n");
+    printf("  4. Trauma\n");
+    printf("Enter choice (1-4): ");
+    scanf("%d", &department_choice);
+
+    printf("\nEnter patient age: ");
+    scanf("%d", &age);
+
+    printf("Enter heart rate (bpm): ");
+    scanf("%d", &heart_rate);
+
+    printf("Enter body temperature (C): ");
+    scanf("%f", &temperature);
+
+    printf("Level of consciousness (1 = Conscious, 0 = Unconscious): ");
+    scanf("%d", &consciousness);
+
+    printf("Enter severity level (1 = Mild, 2 = Moderate, 3 = High): ");
+    scanf("%d", &severity_level);
+
+    
+    int dept_emergency = 0;
+
+    
+    switch (department_choice) {
+        case 1: 
+            switch (severity_level) {
+                case 3:
+                    dept_emergency = 1;
+                    break;
+                case 1:
+                case 2:
+                    dept_emergency = 0;
+                    break;
+                default:
+                    printf("\nError: Invalid severity level selected.\n");
+                    return 1;
+            }
+            break;
+
+        case 2: 
+            switch (heart_rate < 50 || heart_rate > 120) {
+                case 1: 
+                    dept_emergency = 1;
+                    break;
+                case 0:
+                    dept_emergency = 0;
+                    break;
+            }
+            break;
+
+        case 3:
+            switch (consciousness) {
+                case 0: 
+                    dept_emergency = 1;
+                    break;
+                case 1:
+                    dept_emergency = 0;
+                    break;
+                default:
+                    printf("\nError: Invalid consciousness status.\n");
+                    return 1;
+            }
+            break;
+
+        case 4: 
+            switch (severity_level) {
+                case 3:
+                    dept_emergency = 1;
+                    break;
+                case 1:
+                case 2:
+                    dept_emergency = 0;
+                    break;
+                default:
+                    printf("\nError: Invalid severity level selected.\n");
+                    return 1;
+            }
+            break;
+
+        default:
+            printf("\nError: Invalid department selected.\n");
+            return 1;
+    }
+
+    int is_critical = (heart_rate < 50 || heart_rate > 120) && (consciousness == 0);
+
+    int temp_alert = (temperature < 36.0f || temperature > 38.0f);
+
+    int is_senior = (age >= 65);
+
+    char case_category;
+    switch ((age + heart_rate) % 4) {
+        case 0: case_category = 'A'; break;
+        case 1: case_category = 'B'; break;
+        case 2: case_category = 'C'; break;
+        case 3: case_category = 'D'; break;
+        default: case_category = 'U'; break;
+    }
+
+    printf("        PATIENT TRIAGE ASSESSMENT          \n");
+
+    printf("Department          : %s\n", 
+           (department_choice == 1) ? "General Emergency" :
+           (department_choice == 2) ? "Cardiology" :
+           (department_choice == 3) ? "Neurology" : "Trauma");
+
+    printf("Patient Age         : %d years (%s)\n", age, is_senior ? "Senior Priority" : "Standard");
+    printf("Heart Rate          : %d bpm\n", heart_rate);
+    printf("Body Temperature    : %.1f C (%s)\n", temperature, temp_alert ? "Temperature Alert" : "Normal");
+    printf("Consciousness       : %s\n", consciousness ? "Conscious" : "Unconscious");
+    printf("Severity Level      : %d (%s)\n", severity_level, 
+           (severity_level == 1) ? "Mild" : (severity_level == 2) ? "Moderate" : "High");
+
+    printf("Dept Emergency Cond : %s\n", dept_emergency ? "Yes" : "No");
+    printf("Critical Condition  : %s\n", is_critical ? "CRITICAL" : "Non-Critical");
+    printf("Case Category       : Category %c\n", case_category);
+
+    printf("Final Triage Action : ");
+    if (is_critical) {
+        printf("IMMEDIATE MEDICAL ATTENTION (Red Flag - Critical Condition)\n");
+    } else if (dept_emergency || is_senior || temp_alert) {
+        printf("PRIORITY ASSESSMENT (Yellow Flag - Needs Urgent Evaluation)\n");
+    } else {
+        printf("ROUTINE MEDICAL ASSESSMENT (Green Flag - Standard Queue)\n");
+    }
+
+    return 0;
+}
